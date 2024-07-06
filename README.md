@@ -18,7 +18,7 @@ Tambien tenemos este enlace para la parte de publicar editar o eliminar `https:/
 - ![CSS](https://img.shields.io/badge/CSS-1572B6?logo=css3&logoColor=fff&style=flat-square)
 - ![Azure](https://img.shields.io/badge/Azure-0078D4?logo=microsoft-azure&logoColor=fff&style=flat-square)
 - ![MongoDB Stitch](https://img.shields.io/badge/MongoDB_Stitch-47A248?logo=mongodb&logoColor=fff&style=flat-square)
-- 
+  
 ## Estructura del Proyecto
 
 - `azure.js`: Script para interactuar con los servicios de almacenamiento de Azure.
