@@ -1,0 +1,30 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body{
+  font-family: Arial, sans-serif;
+  background-color: #dfc9aa;
+  color: #4a2c14;
+}
+.contenedor{
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+}
+.linea {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+.linea input, textarea{
+  margin: .3em 0;
+  font-size: 1em;
+}
+button{
+  padding: .5em;
+}
+.btn{
+  cursor: pointer;
+}

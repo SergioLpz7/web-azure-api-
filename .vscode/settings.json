@@ -1,0 +1,5 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/cef569df-8305-42eb-825e-b78f1aa98233/resourceGroups/SjoTurismo_group/providers/Microsoft.Web/sites/SjoTurismo",
+  "appService.deploySubpath": ".",
+  "liveServer.settings.port": 5501
+}

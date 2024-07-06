@@ -1,0 +1,93 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #dfc9aa;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background-color: #4a2c14;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2em;
+  color: #f5f5dc;
+}
+#searchInput {
+  padding: 5px;
+  width: 200px;
+}
+.hidden{
+  display: none;
+}
+h1 {
+  font-size: 4em;
+  padding: 1em;
+}
+
+#lugares {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  margin: 2em 0;
+  width: 100%;
+  align-items: center;
+}
+
+.divTurismo {
+  width: 80%;
+  margin: 1.5em 0;
+  background-color: #001f3f;
+  color: white;
+  border-radius: 1em;
+  padding: 1em;
+  text-align: center;
+}
+
+.divTurismo h1 {
+  font-size: 26px;
+  margin-bottom: 0.5em;
+}
+
+.divTurismo p {
+  font-size: 22px;
+}
+
+.divTurismo a img {
+  width: 100%;
+  border-radius: 0.5em;
+  margin-bottom: 1em;
+}
+
+.divTurismo a {
+  text-decoration: none;
+  color: white;
+}
+
+.divTurismo a:hover {
+  opacity: 0.4;
+}
+
+@media screen and (min-width: 1000px) {
+  header {
+    padding: 2em;
+    padding: 0;
+  }
+  .divTurismo h1{
+    font-size: 20px;
+  }
+  .divTurismo p{
+    font-size: 16px;
+  }
+  #lugares {
+    flex-flow: row wrap;
+    justify-content: space-around;
+  }
+  .divTurismo {
+    width: 28%;
+  }
+}

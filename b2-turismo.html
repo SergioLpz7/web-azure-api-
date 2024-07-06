@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Lugares</title>
+    <link rel="icon" href="descarga.png" />
+    <link rel="stylesheet" href="style/detail.css" />
+    <script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4.6.0/stitch.js"></script>
+    <script>
+      var account = "sjoeasdibst15";
+      var fileShare = "images";
+      var sas =
+        "?sv=2022-11-02&ss=f&srt=co&sp=rwdlc&se=2024-05-26T03:31:13Z&st=2023-05-25T19:31:13Z&spr=https&sig=MGlNapyDF6j8iY2taW74ds5pwkAohNWHd1Jgl54aRTM%3D";
+    </script>
+    <script>
+      // Get query string parameters value
+      function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return "";
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+      // Initialize the App Client
+      const client = stitch.Stitch.initializeDefaultAppClient(
+        "sample_turismo-eanpv"
+      );
+      // Get a MongoDB Service Client
+      const mongodb = client.getServiceClient(
+        stitch.RemoteMongoClient.factory,
+        "mongodb-atlas"
+      );
+      // Get a reference to the music database
+      const db = mongodb.db("sample_sjo_turismo");
+      // Function display albums
+      function displayalbums(parameterID, parameterDIV) {
+        db.collection("turismo")
+          .find({ _id: { $eq: new stitch.BSON.ObjectId(parameterID) } })
+          .toArray()
+          .then((docs) => {
+            var html = "";
+            docs.forEach((element) => {
+              var info = "";
+              var index = 0;
+              var imagenes = [];
+              const img = document.querySelector(".slider");
+              for (i = 0; i < element.images.length; i++) {
+                imagenes.push(
+                  "https://" +
+                    account +
+                    ".file.core.windows.net/" +
+                    fileShare +
+                    "/" +
+                    element.images[i].name +
+                    sas +
+                    "&xyz=" +
+                    new Date().getTime().toString()
+                );
+              }
+              console.log(imagenes);
+
+              function siguiente() {
+                if (index == imagenes.length) {
+                  index = 0;
+                }
+                img.src = imagenes[index];
+                index++;
+              }
+
+              var image = document.createElement("img");
+              var intervalo = setInterval(siguiente, 3000);
+
+              info += "<div class='datos'> <h1> Nombre: </h1> <p>" + element.nombre + "</p> </div>";
+              info += `<div class='datos'> <h1> Lugar: </h1> <p>${element.ubicacion}</p> </div>`;
+              info += `<div class='datos'><p>${element.descripcion}</p> </div>`;
+              info += `<h2>Los Lugares más destacados de estos sitios son:</h2> <hr>`;
+              for (let i=0; i<element.destacados.length; i++){
+                info += `<h1>Destacado numero ${i+1}:</h1><img src=${imagenes[i+1]}> <div class='datos'> <h1>Nombre: </h1>  <p>${element.destacados[i].Nombre}</p> </div>`;
+                info += `<div class='datos'><p>${element.destacados[i].Descripcion}</p> </div>`;
+              }
+              info +=
+                "<hr> <a href='https://sjoturismo.azurewebsites.net/'> <button class='atras' > Atrás </button> </a>";
+              html += info;
+            });
+
+            document.getElementById(parameterDIV).innerHTML = html;
+          });
+      }
+
+      // Function execute on load
+      function displayAlbumsOnLoad() {
+        client.auth
+          .loginWithCredential(new stitch.AnonymousCredential())
+          .then(displayalbums(getParameterByName("id"), "sitios"))
+          .catch(console.error);
+      }
+    </script>
+  </head>
+
+  <body onload="displayAlbumsOnLoad()">
+    <center>
+      <div class="contenedor">
+        <div class="carrousel">
+          <img class="slider" />
+        </div>
+        <div id="sitios"></div>
+      </div>
+    </center>
+  </body>
+</html>

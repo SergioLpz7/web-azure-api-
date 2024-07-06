@@ -1,0 +1,100 @@
+<!-- https://sjoturismo.azurewebsites.net/ -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Lugares</title>
+    <link rel="stylesheet" href="style/index.css" />
+    <link rel="icon" href="descarga.png">
+    <script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4.6.0/stitch.js"></script>
+    <script>
+      var account = "sjoeasdibst15";
+      var fileShare = "images";
+      var sas =
+        "?sv=2022-11-02&ss=f&srt=co&sp=rwdlc&se=2024-05-26T03:31:13Z&st=2023-05-25T19:31:13Z&spr=https&sig=MGlNapyDF6j8iY2taW74ds5pwkAohNWHd1Jgl54aRTM%3D";
+    </script>
+
+    <script>
+      // Initialize the App Client
+      const client = stitch.Stitch.initializeDefaultAppClient(
+        "sample_turismo-eanpv"
+      );
+      // Get a MongoDB Service Client
+      const mongodb = client.getServiceClient(
+        stitch.RemoteMongoClient.factory,
+        "mongodb-atlas"
+      );
+      // Get a reference to the music database
+      const db = mongodb.db("sample_sjo_turismo");
+
+      // Function display albums
+      function displayalbums() {
+        db.collection("turismo")
+          .find({archivado: false})
+          .toArray()
+          .then((docs) => {
+            var html = "";
+            console.log(docs);
+            docs.forEach((element) => {
+              var info = "";
+              // info += ` <div class="divTurismo"> <h1> ${element.nombre} </h1><a href="http://127.0.0.1:5500/b2-turismo.html?id=${element._id}">`;
+              info += ` <div class="divTurismo"> <h1> ${element.nombre} </h1><a href="https://sjoturismo.azurewebsites.net/b2-turismo.html?id=${element._id}">`;
+              info +=
+                '<img class="img" src="https://' +
+                account +
+                ".file.core.windows.net/" +
+                fileShare +
+                "/" +
+                element.images[0].name +
+                sas +
+                "&xyz=" +
+                new Date().getTime().toString() +
+                '" /> </a>';
+              info += ` <p>${element.ubicacion}</p></div> `;
+              html += info;
+            });
+            document.getElementById("lugares").innerHTML = html;
+          });
+      }
+      function searchInp() {
+        const searchInput = document.getElementById("searchInput");
+        searchInput.addEventListener("input", function () {
+          const searchValue = searchInput.value.toLowerCase();
+
+          const countries = document.querySelectorAll(".divTurismo");
+          countries.forEach((country) => {
+            const title = country.querySelector("p").textContent.toLowerCase();
+            if (title.includes(searchValue)) {
+              country.classList.remove("hidden");
+            } else {
+              country.classList.add("hidden");
+            }
+          });
+        });
+      }
+      // Function execute on load
+      function displayAlbumsOnLoad() {
+        client.auth
+          .loginWithCredential(new stitch.AnonymousCredential())
+          .then(() => {
+            displayalbums();
+            searchInp();
+          })
+          .catch(console.error);
+      }
+    </script>
+    <script>
+      const divs = document.querySelectorAll(".divTurismo");
+      const img = document.querySelectorAll(".img");
+    </script>
+  </head>
+  <body onload="displayAlbumsOnLoad()">
+    <header>
+      <h1>LUGARES DEL MUNDO</h1>
+    </header>
+    <center>
+      <input type="text" id="searchInput" placeholder="Ciudad, País" />
+    </center>
+    <div id="lugares"></div>
+  </body>
+</html>
